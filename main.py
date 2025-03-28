@@ -478,7 +478,7 @@ def train(args):
     # Initialize wandb if enabled
     if args.use_wandb:
         wandb.init(
-            project="pdp-gpt2",
+            project="pdp-gpt2-implementation",
             config=vars(args),
             name=args.run_name
         )

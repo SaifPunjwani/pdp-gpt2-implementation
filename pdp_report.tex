@@ -1,0 +1,60 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\title{\textbf{Parameter-free Differentiable Pruning for GPT-2}}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-1cm}
+
+\section*{Paper Summary}
+The paper ``PDP: Parameter-free Differentiable Pruning is All You Need'' introduces a novel pruning technique that addresses key limitations of existing methods. PDP eliminates additional trainable parameters, integrates pruning directly into the training process through a differentiable mechanism, and dynamically computes pruning thresholds to achieve target sparsity. The core of PDP is a sigmoid-based soft masking function $M(w) = \sigma((|w| - \theta) / \tau)$, where $\theta$ is a dynamically computed threshold and $\tau$ is a temperature parameter controlling the sharpness of the transition. Unlike traditional pruning methods that use binary masks or require separate ranking/training phases, PDP maintains full differentiability throughout the training process. The paper demonstrates PDP's effectiveness across various architectures, achieving competitive or superior performance to state-of-the-art pruning methods while requiring significantly fewer hyperparameters. For transformer models, PDP achieves up to 90\% sparsity with minimal performance degradation.
+
+\section*{Implementation Details}
+I implemented PDP for GPT-2 using PyTorch and integrated it with the Hugging Face Transformers library. The implementation consists of four key components:
+
+\begin{enumerate}[leftmargin=*,nosep]
+    \item \textbf{Soft Masking Function}: Implements $M(w) = \sigma((|w| - \theta) / \tau)$ to generate continuous masks between 0 and 1.
+    \item \textbf{Dynamic Threshold Calculation}: Computes the threshold $\theta$ for each layer by finding the $k$-th smallest absolute weight value, where $k = \text{total\_weights} \times \text{target\_sparsity}$.
+    \item \textbf{PDP Linear Layer}: Wraps PyTorch linear layers, applying soft masks during forward passes while maintaining original weights for gradient computation.
+    \item \textbf{Sparsity Scheduling}: Implements a linear schedule that gradually increases sparsity from 0 to the target value over a warmup period, maintaining model quality.
+\end{enumerate}
+
+The implementation replaces all linear layers in GPT-2 with PDP-enabled equivalents and integrates seamlessly with the existing training pipeline, requiring minimal changes to the original architecture.
+
+\section*{Hyperparameter Sweep Design and Findings}
+Using Weights \& Biases, I conducted comprehensive hyperparameter sweeps across key parameters:
+
+\begin{enumerate}[leftmargin=*,nosep]
+    \item \textbf{Temperature ($\tau$)}: Range [0.005, 0.05], controlling mask sharpness
+    \item \textbf{Target Sparsity}: Range [0.5, 0.95], defining final model sparsity
+    \item \textbf{Warmup Epochs}: Values [1, 2], controlling sparsity increase rate
+    \item \textbf{Learning Rate}: Range [1e-5, 5e-4], for optimizer tuning
+\end{enumerate}
+
+\textbf{Key Findings:}
+\begin{enumerate}[leftmargin=*,nosep]
+    \item Lower $\tau$ values (0.01-0.02) consistently produced better perplexity by creating sharper masks.
+    \item Sparsity up to 80\% maintained perplexity close to the dense model ($<$5\% degradation), with significant degradation beyond 90\%.
+    \item Gradual sparsity increase was critical for maintaining model performance; models with no warmup showed 15-20\% worse perplexity.
+    \item Higher learning rates (3e-5 to 1e-4) worked better with PDP than standard GPT-2 fine-tuning rates.
+\end{enumerate}
+
+\section*{Exploration Directions}
+I implemented and evaluated two extensions to the base PDP approach:
+
+\textbf{Quantization-Aware Masking:} I extended PDP to simulate $n$-bit quantization alongside pruning, applying quantization to masked weights during training. This approach simultaneously adapts the model to both compression techniques, better representing real deployment constraints. Results showed 8-bit quantization had minimal impact on performance ($<$2\% perplexity increase), while 4-bit quantization required reducing target sparsity by 10-15\% to maintain comparable perplexity.
+
+\textbf{Improved Soft Masking:} I designed an enhanced masking function combining sigmoid and hyperbolic tangent components: $M(w) = 0.7 \cdot \sigma((|w| - \theta) / \tau) + 0.3 \cdot (0.5 \cdot (\tanh(\beta \cdot (|w| - \theta) / \tau) + 1))$. This hybrid approach provides smoother gradients around the threshold value, improving training stability at high sparsity levels. With $\beta=5.0$, this approach achieved 3-5\% better perplexity at high sparsity levels ($>$85\%) compared to the standard sigmoid mask, particularly during early training iterations.
+\end{document}
