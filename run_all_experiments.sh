@@ -6,14 +6,19 @@ mkdir -p logs
 mkdir -p output
 mkdir -p visualization_output
 
-# Set the project name
-PROJECT_NAME="pdp-gpt2-implementation"
+# Get the project name from parameter or use default
+if [ -z "$1" ]; then
+    PROJECT_NAME="pdp-gpt2-implementation"
+    echo "No project name provided, using default: $PROJECT_NAME"
+else
+    PROJECT_NAME="$1"
+    echo "Using provided project name: $PROJECT_NAME"
+fi
 
 echo "===== PDP GPT-2 Comprehensive Experiments ====="
 echo "Starting time: $(date)"
 echo "Project: $PROJECT_NAME"
 
-# Helper function to log experiments
 log_start() {
     echo "$(date): Starting experiment: $1" | tee -a logs/experiment_log.txt
 }
@@ -23,7 +28,6 @@ log_end() {
     echo "-----------------------------------------" | tee -a logs/experiment_log.txt
 }
 
-# Make sure wandb is logged in
 echo "Checking wandb login status..."
 wandb status
 
