@@ -47,3 +47,8 @@ quick_test_wandb.py
 report.md
 test_pdp.py
 WANDB_GUIDE.md
+generate_quick_results.py
+pdp_slides.tex
+presentation_notes.tex
+presentation_notes.md
+presentation_figures/
