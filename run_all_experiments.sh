@@ -46,8 +46,9 @@ for tau in 0.01 0.02 0.05; do
             --tau $tau \
             --sparsity $sparsity \
             --num_epochs 3 \
-            --batch_size 16 \
+            --batch_size 4 \
             --warmup_epochs 1 \
+            --max_length 128 \
             --use_wandb \
             --run_name "$run_name" \
             --output_dir "output/$run_name" 2>&1 | tee logs/$run_name.log
@@ -73,7 +74,7 @@ for beta in 2.0 5.0 10.0; do
             --improved_masking \
             --beta $beta \
             --num_epochs 3 \
-            --batch_size 16 \
+            --batch_size 4 \
             --warmup_epochs 1 \
             --use_wandb \
             --run_name "$run_name" \
@@ -100,7 +101,7 @@ for bits in 4 8; do
             --quantize \
             --bits $bits \
             --num_epochs 3 \
-            --batch_size 16 \
+            --batch_size 4 \
             --warmup_epochs 1 \
             --use_wandb \
             --run_name "$run_name" \
@@ -125,7 +126,7 @@ for warmup in 0 1 2; do
         --sparsity 0.8 \
         --warmup_epochs $warmup \
         --num_epochs 3 \
-        --batch_size 16 \
+        --batch_size 4 \
         --use_wandb \
         --run_name "$run_name" \
         --output_dir "output/$run_name" 2>&1 | tee logs/$run_name.log
@@ -148,7 +149,7 @@ for sparsity in 0.7 0.9; do
         --sparsity $sparsity \
         --custom_optimizer \
         --num_epochs 3 \
-        --batch_size 16 \
+        --batch_size 4 \
         --warmup_epochs 1 \
         --use_wandb \
         --run_name "$run_name" \
