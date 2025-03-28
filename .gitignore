@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Weights & Biases
+wandb/
+
+# Data files
+*.tar.gz
+*.zip
+
+# Model checkpoints
+output/
+checkpoints/
+*.pt
+*.bin
+
+# Generated visualizations
+*.png
+*.jpg
+*.jpeg
+*.pdf
+
+# Jupyter Notebooks
+.ipynb_checkpoints/

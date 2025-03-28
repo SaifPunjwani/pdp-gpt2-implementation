@@ -1,0 +1,53 @@
+program: main.py
+method: bayes
+metric:
+  name: perplexity
+  goal: minimize
+parameters:
+  sparsity:
+    min: 0.5
+    max: 0.95
+    distribution: uniform
+  tau:
+    min: 0.005
+    max: 0.05
+    distribution: uniform
+  warmup_epochs:
+    values: [1, 2]
+  learning_rate:
+    min: 1e-5
+    max: 5e-4
+    distribution: log_uniform_values
+  batch_size:
+    values: [4, 8, 16]
+  
+  # Extension parameters
+  quantize:
+    values: [true, false]
+  bits:
+    values: [4, 8]
+    conditions:
+      quantize: true
+  improved_masking:
+    values: [true, false]
+  beta:
+    min: 1.0
+    max: 10.0
+    distribution: uniform
+    conditions:
+      improved_masking: true
+  custom_optimizer:
+    values: [true, false]
+
+# Fixed parameters for all sweeps
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - "--num_epochs=3"
+  - "--max_length=512" 
+  - "--weight_decay=0.01"
+  - "--lr_warmup_steps=100"
+  - "--max_grad_norm=1.0"
+  - "--use_wandb"
+  - ${args}
