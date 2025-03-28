@@ -72,7 +72,7 @@ To run hyperparameter sweeps with Weights & Biases:
 
 ## Experiment Results
 
-The results of our hyperparameter sweeps and extension experiments are available in the included report and presentation.
+The results of the hyperparameter sweeps and extension experiments are available in the included report and presentation.
 
 ## Paper Summary
 
