@@ -40,3 +40,10 @@ checkpoints/
 
 # Jupyter Notebooks
 .ipynb_checkpoints/
+
+# Specific files to exclude
+pdp_report.tex
+quick_test_wandb.py
+report.md
+test_pdp.py
+WANDB_GUIDE.md
