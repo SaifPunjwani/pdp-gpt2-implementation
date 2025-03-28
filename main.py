@@ -273,7 +273,7 @@ def prepare_dataset(tokenizer, batch_size=16, max_length=512):
     """Prepare and tokenize the OpenWebText dataset."""
     # Load a subset of OpenWebText for faster experimentation
     print("Loading OpenWebText dataset...")
-    dataset = load_dataset("openwebtext", split="train[:1%]")
+    dataset = load_dataset("openwebtext", split="train[:0.1%]")
     
     # Tokenize the dataset
     print("Tokenizing dataset...")
@@ -589,7 +589,7 @@ def parse_args():
     parser.add_argument("--batch_size", type=int, default=8, help="Batch size for training")
     parser.add_argument("--learning_rate", type=float, default=5e-5, help="Learning rate")
     parser.add_argument("--num_epochs", type=int, default=3, help="Number of training epochs")
-    parser.add_argument("--max_length", type=int, default=512, help="Maximum sequence length")
+    parser.add_argument("--max_length", type=int, default=128, help="Maximum sequence length")
     parser.add_argument("--weight_decay", type=float, default=0.01, help="Weight decay")
     parser.add_argument("--lr_warmup_steps", type=int, default=500, help="Learning rate warmup steps")
     parser.add_argument("--max_grad_norm", type=float, default=1.0, help="Gradient clipping norm")
