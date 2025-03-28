@@ -163,7 +163,7 @@ def simulate_quantization_results():
         [30, 35, 45, 80],      # 32-bit
         [32, 38, 48, 85],      # 8-bit
         [40, 50, 65, 120]      # 4-bit
-    ])
+    ], dtype=float)
     
     # Add some randomness
     np.random.seed(42)
@@ -232,7 +232,7 @@ def generate_tau_heatmap():
         [32, 38, 48, 80],    # tau=0.02
         [35, 42, 55, 95],    # tau=0.05
         [40, 50, 70, 120]    # tau=0.1
-    ])
+    ], dtype=float)
     
     # Create heatmap
     plt.figure(figsize=(10, 8))
