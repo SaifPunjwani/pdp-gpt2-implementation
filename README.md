@@ -14,7 +14,7 @@ PDP is a pruning technique that:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/pdp-gpt2.git
+git clone https://github.com/SaifPunjwani/pdp-gpt2.git
 cd pdp-gpt2
 
 # Install dependencies
