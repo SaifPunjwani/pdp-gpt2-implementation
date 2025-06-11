@@ -1,6 +1,6 @@
 # Parameter-free Differentiable Pruning (PDP) for GPT-2
 
-This repository implements the Parameter-free Differentiable Pruning (PDP) technique described in the paper "PDP: Parameter-free Differentiable Pruning is All You Need" by Minsik Cho, Saurabh Adya, and Devang Naik, applied to the GPT-2 language model.
+This repository implements the Parameter-free Differentiable Pruning (PDP) technique described in the paper "PDP: Parameter-free Differentiable Pruning is All You Need" by Minsik Cho, Saurabh Adya, and Devang Naik, applied to the GPT-2 language model adding a novel implementation to masking and a completely new optimizer.
 
 ## Overview
 
